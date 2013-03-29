@@ -119,6 +119,11 @@
 
 			$success = (200 == $this->response->code);
 
+			if ($respEvent = $this->_eventDispatcher->createResponseEvent($this, $this->response->body, $success))
+			{
+				$this->_eventDispatcher->dispatchEvent($respEvent, "responseReceived");
+			}
+
 			if ($evt)
 			{
 				$evt->setResult($success ? Swift_Events_SendEvent::RESULT_SUCCESS : Swift_Events_SendEvent::RESULT_FAILED);
